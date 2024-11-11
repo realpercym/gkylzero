@@ -15,26 +15,32 @@ then
     echo "Downloading SuperLU .."
     # delete old checkout and builds
     rm -rf superlu-*
-    curl -L https://github.com/xiaoyeli/superlu/archive/refs/tags/v5.2.2.tar.gz > superlu-5.2.2.tar.gz
+    curl -L https://github.com/xiaoyeli/superlu_mt/archive/refs/tags/v4.0.0.tar.gz -o superlu_mt-4.0.0.tar.gz
 fi
 
 if [ "$BUILD_PKGS" = "yes" ]
 then
     echo "Building SuperLU .."
-    gunzip -f superlu-5.2.2.tar.gz
-    tar xvf superlu-5.2.2.tar
+    gunzip -f superlu_mt-4.0.0.tar.gz
+    tar xvf superlu_mt-4.0.0.tar
 
-    cd superlu-5.2.2
+    cd superlu_mt-4.0.0
     mkdir build
     cd build
 
-    # configure build
-    cmake .. -DCMAKE_C_FLAGS="-g -O3 -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_INSTALL_LIBDIR=lib -Denable_tests=NO -Denable_internal_blaslib=NO -DXSDK_ENABLE_Fortran=NO
+    cmake .. \
+        -DCMAKE_C_FLAGS="-g -O3 -fPIC" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=$PREFIX \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -Denable_tests=NO \
+        -Denable_internal_blaslib=NO \
+        -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"
 
     # build and install
     make -j 32 VERBOSE=1
     make install
 
     # soft-link 
-    ln -sfn $PREFIX $GKYLSOFT/superlu
+    ln -sfn $PREFIX/superlu_mt-4.0.0 $PREFIX/superlu
 fi

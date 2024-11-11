@@ -1,3 +1,5 @@
+typedef int __CLPK_integer;
+
 #include <gkyl_alloc.h>
 #include <gkyl_alloc_flags_priv.h>
 #include <gkyl_mat.h>
@@ -25,11 +27,11 @@
 #include <string.h>
 
 /** Map Gkyl flags to CBLAS flags */
-static int cblas_trans_flags[] = {
+ static int cblas_trans_flags[] = {
   [GKYL_NO_TRANS] = CblasNoTrans,
-  [GKYL_TRANS] = CblasTrans,
+ [GKYL_TRANS] = CblasTrans,
   [GKYL_CONJ_TRANS] = CblasConjTrans
-};
+ };
 
 struct gkyl_nmat_mem {
   bool on_gpu; // flag to indicate if we are on GPU
@@ -163,7 +165,7 @@ ho_mat_mm(double alpha, double beta,
   assert( (sza.nr == szc.nr) && (sza.nc == k) && (szb.nr == k) && (szb.nc == szc.nc) );
 
   // call BLAS routine to perform matrix-matrix multiply
-  cblas_dgemm(CblasColMajor,
+   cblas_dgemm(CblasColMajor,
     cblas_trans_flags[transa],
     cblas_trans_flags[transb],
     C->nr, C->nc, k,

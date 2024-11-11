@@ -3,7 +3,8 @@
 
 
 : "${PREFIX:=$HOME/Desktop/PROJECT_DR_YAN/gkyl}"
-LDFLAGS="-Wl,-rpath,/opt/homebrew/Cellar/open-mpi/5.0.5/lib" ./configure --prefix=$PREFIX \
+./configure --prefix=$PREFIX \
+            CC=/usr/bin/clang \
             --use-mpi=yes \
             --mpi-inc=/opt/homebrew/Cellar/open-mpi/5.0.5/include \
             --mpi-lib=/opt/homebrew/Cellar/open-mpi/5.0.5/lib \

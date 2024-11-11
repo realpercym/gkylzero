@@ -1,5 +1,6 @@
 // Private header for fem_parproj updater.
 #pragma once
+#include <assert.h>
 #include <gkyl_fem_parproj_kernels.h>
 #include <gkyl_basis.h>
 #include <gkyl_superlu_ops.h>
