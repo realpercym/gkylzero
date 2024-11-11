@@ -3,9 +3,10 @@
 source ./build-opts.sh
 
 # Edit to suite your system
-PREFIX=$GKYLSOFT/superlu-5.2.2
+PREFIX="$HOME/Desktop/PROJECT_DR_YAN/gkyl/superlu_mt-4.0.0"
+
 # Location where dependency sources will be downloaded
-DEP_SOURCES=$GKYLSOFT/dep_src/
+DEP_SOURCES=${PREFIX}/dep_src
 
 mkdir -p $DEP_SOURCES
 cd $DEP_SOURCES

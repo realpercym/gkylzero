@@ -4,6 +4,7 @@
 #include <assert.h> 
 #include <slu_mt_ddefs.h>    // Contains dCreate_CompCol_Matrix prototype and required types
 #include <supermatrix.h>      // Defines Stype_t, Dtype_t, Mtype_t
+#include <slu_mt_util.h>
 #include <stdbool.h>
 
 struct gkyl_superlu_prob {
@@ -182,8 +183,7 @@ void gkyl_superlu_print_amat(struct gkyl_superlu_prob *prob)
 }
 
 
-void
-gkyl_superlu_ludecomp(struct gkyl_superlu_prob *prob)
+void gkyl_superlu_ludecomp(struct gkyl_superlu_prob *prob)
 {
   /*
   *   Get column permutation vector perm_c[], according to permc_spec:

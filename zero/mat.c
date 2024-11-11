@@ -240,7 +240,8 @@ gkyl_mat_linsolve_lu(struct gkyl_mat *A, struct gkyl_mat *x, void* ipiv)
   __CLPK_integer nrhs = x->nc;
   __CLPK_integer lda = A->nr;
   __CLPK_integer ldb = A->nr;
-  dgesv_(&n, &nrhs, A->data, &lda, ipiv, x->data, &ldb, &info);
+  dgesv_((__LAPACK_int *)&n, (__LAPACK_int *)&nrhs, A->data, \
+    (__LAPACK_int *)&lda, ipiv, x->data, (__LAPACK_int *)&ldb, (__LAPACK_int *)&info);
 #else
   // on non-Darwin platforms modern LAPACKE interface is available
   int info = LAPACKE_dgesv(LAPACK_COL_MAJOR,

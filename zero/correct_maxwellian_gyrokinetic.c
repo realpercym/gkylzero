@@ -54,8 +54,12 @@ gkyl_correct_maxwellian_gyrokinetic_new(const struct gkyl_rect_grid *grid, const
     gkyl_array_copy(up->bmag, bmag);
     gkyl_array_copy(up->jacob_tot, jacob_tot);
   } else {
-    up->bmag = bmag;
-    up->jacob_tot = jacob_tot;
+  //  up->bmag = bmag;
+  //  up->jacob_tot = jacob_tot;
+
+  //  Cast to remove const qualifier if necessary
+      up->bmag = (struct gkyl_array *) bmag;           
+      up->jacob_tot = (struct gkyl_array *) jacob_tot;
   }
 
   // Allocate memory
