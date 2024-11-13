@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stddef.h>
+#include <slu_mt_ddefs.h>
 #include <stdbool.h>
 #define COLMAJOR 0
 #define ROWMAJOR 1

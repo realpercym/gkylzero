@@ -5,6 +5,7 @@
 #include <gkyl_superlu_ops.h>
 #include <gkyl_util.h>
 
+#include "slu_mt_util.h"
 #include <stdbool.h>
 
 void test_cusolver_qr();
@@ -28,8 +29,8 @@ void test_slu_example()
   int      *perm_r; /* row permutations from partial pivoting */
   int      *perm_c; /* column permutation vector */
   int      nrhs, info, i, m, n, nnz, permc_spec;
-  superlu_options_t options;
-  SuperLUStat_t stat;
+  superlumt_options_t options;
+  Gstat_t stat;
 
   /* Initialize matrix A. */
   /*  A : matrix([s,0,u,u,0],[l,u,0,0,0],[0,l,p,0,0],[0,0,0,e,u],[l,l,0,0,r]); */

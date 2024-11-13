@@ -11,8 +11,8 @@ ARCH_FLAGS ?= -march=native
 #CUDA_ARCH ?= 70
 
 # Warning flags: -Wall -Wno-unused-variable -Wno-unused-function -Wno-missing-braces
-CFLAGS ?= -O3 -g -ffast-math -fPIC -MMD -MP 
-LDFLAGS +=
+CFLAGS ?= -O3 -g -ffast-math -fPIC -MMD -MP -I/opt/homebrew/include
+#LDFLAGS +=
 PREFIX ?= /Users/percymartinez/Desktop/PROJECT_DR_YAN/gkyl
 INSTALL_PREFIX ?= ${PREFIX}
 
@@ -62,8 +62,8 @@ endif
 
 # Read MPI paths and flags if needed 
 USING_MPI = yes
-MPI_INC_DIR = /opt/homebrew/Cellar/open-mpi/5.0.5/include
-MPI_LIB_DIR = /opt/homebrew/Cellar/open-mpi/5.0.5/lib
+MPI_INC_DIR = /opt/homebrew/include
+MPI_LIB_DIR = /opt/homebrew/lib
 ifeq (${USE_MPI}, 1)
 	USING_MPI = yes
 #	MPI_INC_DIR = ${/opt/homebrew/Cellar/open-mpi/5.0.5/include}
@@ -112,8 +112,8 @@ BUILD_DIR ?= build
 # On OSX we should use Accelerate framework
 ifeq (${UNAME}, Darwin)
 #	LAPACK_LIB_DIR = 
-	LAPACK_INC = "-framework Accelerate"
-	LAPACK_LIB = "-framework Accelerate"
+#	LAPACK_INC = -framework Accelerate
+	LAPACK_LIB = -framework Accelerate
 	CFLAGS += -DGKYL_USING_FRAMEWORK_ACCELERATE -DACCELERATE_NEW_LAPACK -DACCELERATE_LAPACK_ILP64
 	SHFLAGS += -dynamiclib 
 else
@@ -134,7 +134,8 @@ INSTALL_HEADERS := $(shell ls apps/gkyl_*.h zero/gkyl_*.h  amr/gkyl_*.h | grep "
 INSTALL_HEADERS += $(shell ls minus/*.h)
 
 # all includes
-INCLUDES = -Iminus -Iminus/STC/include -Izero -Iapps -Iamr -Iregression -I${BUILD_DIR} ${KERN_INCLUDES} -I${LAPACK_INC} -I${SUPERLU_INC} -I${MPI_INC_DIR} #-I${NCCL_INC_DIR} -I${LUA_INC_DIR}
+INCLUDES = -Iminus -Iminus/STC/include -Izero -Iapps -Iamr -Iregression -I${BUILD_DIR} ${KERN_INCLUDES} -I${SUPERLU_INC} -I${MPI_INC_DIR} #-I${NCCL_INC_DIR} -I${LUA_INC_DIR}
+# TWO ADD'L LINES HERE IN SAMPLE
 
 # Directories containing source code
 SRC_DIRS := minus zero apps amr kernels
@@ -163,9 +164,9 @@ KERN_INCLUDES = $(addprefix -I,$(KERN_INC_DIRS))
 
 # List of link directories and libraries for unit and regression tests
 EXEC_LIB_DIRS = -L${SUPERLU_LIB_DIR} -L${BUILD_DIR} -L${MPI_LIB_DIR} #-L${NCCL_LIB_DIR} -L${LUA_LIB_DIR}
-EXEC_EXT_LIBS = -lsuperlu_mt ${MPI_LIBS} -lm -lpthread -ldl -framework Accelerate #${CUDA_LIBS} ${NCCL_LIBS} ${LUA_LIBS} -lm -lpthread -ldl
+EXEC_EXT_LIBS = -lsuperlu_mt ${MPI_LIBS} -lm -lpthread -ldl ${LAPACK_LIB} #${CUDA_LIBS} ${NCCL_LIBS} ${LUA_LIBS} -lm -lpthread -ldl
 EXEC_LIBS = ${BUILD_DIR}/libgkylzero.so ${EXEC_EXT_LIBS}
-EXEC_RPATH = /opt/homebrew/Cellar/open-mpi/5.0.5/lib
+EXEC_RPATH = -Wl,-rpath,/opt/homebrew/lib
 
 # Build commands for C source
 $(BUILD_DIR)/%.c.o: %.c
@@ -181,22 +182,22 @@ $(BUILD_DIR)/%.c.o: %.c
 ${BUILD_DIR}/unit/%: unit/%.c ${BUILD_DIR}/libgkylzero.so #${UNIT_CU_OBJS}
 	$(MKDIR_P) ${BUILD_DIR}/unit
 #	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $< -I. $(INCLUDES) ${UNIT_CU_OBJS} ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
-	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
+	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS} -v
 
 # Regression tests
 ${BUILD_DIR}/regression/%: regression/%.c ${BUILD_DIR}/libgkylzero.so
 	$(MKDIR_P) ${BUILD_DIR}/regression
-	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
+	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS} -v
 
 # AMR regression tests
 ${BUILD_DIR}/amr_regression/%: amr_regression/%.c ${BUILD_DIR}/libgkylzero.so
 	${MKDIR_P} ${BUILD_DIR}/amr_regression
-	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
+	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS} -v
 
 # Automated regression system
 ${BUILD_DIR}/ci/%: ci/%.c ${BUILD_DIR}/libgkylzero.so
 	$(MKDIR_P) ${BUILD_DIR}/ci
-	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
+	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}v-v
 
 # Lua interpreter for testing Lua regression tests
 #${BUILD_DIR}/xglua: regression/xglua.c ${BUILD_DIR}/libgkylzero.so
