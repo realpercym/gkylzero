@@ -2,6 +2,7 @@
 #include <gkyl_alloc.h>
 
 #include <thpool.h>
+#include <stddef.h>
 
 static void
 null_pool_free(const struct gkyl_ref_count *ref)

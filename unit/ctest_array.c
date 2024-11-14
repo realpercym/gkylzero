@@ -1189,7 +1189,7 @@ test_grid_array_rio_1()
   int err =
     gkyl_grid_sub_array_read(&grid2, &range, arr2, "ctest_array_grid_array_1.gkyl");
 
-  TEST_CHECK( err < 1 );  
+  TEST_CHECK( err < 1 );
   
   if (err < 1) {
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
-#include <stddef.h>
+#include <slu_mt_ddefs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

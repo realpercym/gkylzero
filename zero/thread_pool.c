@@ -2,6 +2,7 @@
 #include <gkyl_alloc.h>
 
 #include <thpool.h>
+#include <stddef.h>
 
 struct jp_thread_pool {
   struct gkyl_job_pool jp; // base job-pool object

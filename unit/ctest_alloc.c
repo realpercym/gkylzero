@@ -1,5 +1,6 @@
 #include <acutest.h>
 #include <gkyl_alloc.h>
+#include <stddef.h>
 
 void
 test_aligned_alloc()

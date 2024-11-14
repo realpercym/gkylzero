@@ -130,11 +130,11 @@ endif
 # Header files
 HEADERS := $(wildcard minus/*.h) $(wildcard zero/*.h) $(wildcard apps/*.h) $(wildcard amr/*.h) $(wildcard kernels/*/*.h)
 # Headers to install
-INSTALL_HEADERS := $(shell ls apps/gkyl_*.h zero/gkyl_*.h  amr/gkyl_*.h | grep "priv" | sort)
-INSTALL_HEADERS += $(shell ls minus/*.h)
+INSTALL_HEADERS := $(shell ls apps/gkyl_*.h zero/gkyl_*.h amr/gkyl_*.h minus/*.h | sort)
 
 # all includes
-INCLUDES = -Iminus -Iminus/STC/include -Izero -Iapps -Iamr -Iregression -I${BUILD_DIR} ${KERN_INCLUDES} -I${SUPERLU_INC} -I${MPI_INC_DIR} #-I${NCCL_INC_DIR} -I${LUA_INC_DIR}
+INCLUDES = -Iminus -Iminus/STC/include -Izero -Iapps -Iamr -Iregression \
+	-I${BUILD_DIR} ${KERN_INCLUDES} -I${SUPERLU_INC} -I${MPI_INC_DIR} # -I${NCCL_INC_DIR} -I${LUA_INC_DIR}
 
 # Directories containing source code
 SRC_DIRS := minus zero apps amr kernels

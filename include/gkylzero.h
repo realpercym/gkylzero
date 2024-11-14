@@ -1,5 +1,5 @@
 Running gengkylzeroh.sh...
-Zero headers: gkyl_alloc.h
+gkyl_alloc.h
 gkyl_ambi_bolt_potential.h
 gkyl_array.h
 gkyl_array_integrate.h

@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
 
 #include <gkyl_alloc.h>
 #include <gkyl_alloc_flags_priv.h>

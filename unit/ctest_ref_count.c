@@ -2,6 +2,8 @@
 #include <gkyl_ref_count.h>
 #include <gkyl_alloc.h>
 
+#include <stddef.h>
+
 
 // global to indicate if free was called
 static int free_called = 0;
