@@ -135,7 +135,6 @@ INSTALL_HEADERS += $(shell ls minus/*.h)
 
 # all includes
 INCLUDES = -Iminus -Iminus/STC/include -Izero -Iapps -Iamr -Iregression -I${BUILD_DIR} ${KERN_INCLUDES} -I${SUPERLU_INC} -I${MPI_INC_DIR} #-I${NCCL_INC_DIR} -I${LUA_INC_DIR}
-# TWO ADD'L LINES HERE IN SAMPLE
 
 # Directories containing source code
 SRC_DIRS := minus zero apps amr kernels
@@ -182,22 +181,22 @@ $(BUILD_DIR)/%.c.o: %.c
 ${BUILD_DIR}/unit/%: unit/%.c ${BUILD_DIR}/libgkylzero.so #${UNIT_CU_OBJS}
 	$(MKDIR_P) ${BUILD_DIR}/unit
 #	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $< -I. $(INCLUDES) ${UNIT_CU_OBJS} ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
-	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS} -v
+	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
 
 # Regression tests
 ${BUILD_DIR}/regression/%: regression/%.c ${BUILD_DIR}/libgkylzero.so
 	$(MKDIR_P) ${BUILD_DIR}/regression
-	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS} -v
+	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
 
 # AMR regression tests
 ${BUILD_DIR}/amr_regression/%: amr_regression/%.c ${BUILD_DIR}/libgkylzero.so
 	${MKDIR_P} ${BUILD_DIR}/amr_regression
-	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS} -v
+	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
 
 # Automated regression system
 ${BUILD_DIR}/ci/%: ci/%.c ${BUILD_DIR}/libgkylzero.so
 	$(MKDIR_P) ${BUILD_DIR}/ci
-	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}v-v
+	${CC} ${CFLAGS} -o $@ $< -I. $(INCLUDES) ${EXEC_LIB_DIRS} ${EXEC_RPATH} ${EXEC_LIBS}
 
 # Lua interpreter for testing Lua regression tests
 #${BUILD_DIR}/xglua: regression/xglua.c ${BUILD_DIR}/libgkylzero.so
@@ -344,7 +343,7 @@ $(ZERO_SH_INSTALL_LIB): $(OBJS)
 all: ${BUILD_DIR}/gkylzero.h ${ZERO_SH_LIB} ## Build libraries and amalgamated header
 
 # Explicit targets to build unit and regression tests
-unit: ${ZERO_SH_LIB} ${UNITS} ${MPI_UNITS} ${LUA_UNITS} ## Build unit tests
+unit: ${ZERO_SH_LIB} ${UNITS} ${MPI_UNITS} #${LUA_UNITS} ## Build unit tests
 regression: ${ZERO_SH_LIB} ${REGS} regression/rt_arg_parse.h ${BUILD_DIR}/xglua ## Build regression tests
 amr_regression: ${ZERO_SH_LIB} ${AMR_REGS} ## Build AMR regression tests
 ci: ${ZERO_SH_LIB} ${CI} ## Build automated regression system

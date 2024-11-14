@@ -5,8 +5,10 @@
 #include <gkyl_superlu_ops.h>
 #include <gkyl_util.h>
 
-#include "slu_mt_util.h"
+#include <slu_mt_util.h>
 #include <stdbool.h>
+
+#include <math.h>
 
 void test_cusolver_qr();
 void test_cusolver_rf();
@@ -36,9 +38,9 @@ void test_slu_example()
   /*  A : matrix([s,0,u,u,0],[l,u,0,0,0],[0,l,p,0,0],[0,0,0,e,u],[l,l,0,0,r]); */
   m = n = 5;
   nnz = 12;
-  if ( !(a = doubleMalloc(nnz)) ) ABORT("Malloc fails for a[].");
-  if ( !(asub = intMalloc(nnz)) ) ABORT("Malloc fails for asub[].");
-  if ( !(xa = intMalloc(n+1)) ) ABORT("Malloc fails for xa[].");
+  if ( !(a = doubleMalloc(nnz)) ) SUPERLU_ABORT("Malloc fails for a[].");
+  if ( !(asub = intMalloc(nnz)) ) SUPERLU_ABORT("Malloc fails for asub[].");
+  if ( !(xa = intMalloc(n+1)) ) SUPERLU_ABORT("Malloc fails for xa[].");
   
   s = 19.0; u = 21.0; p = 16.0; e = 5.0; r = 18.0; l = 12.0;
   /*  A : matrix([s,0,u,u,0],[l,u,0,0,0],[0,l,p,0,0],[0,0,0,e,u],[l,l,0,0,r]); */
@@ -54,23 +56,24 @@ void test_slu_example()
     
   /* Create right-hand side matrix B. */
   nrhs = 1;
-  if ( !(rhs = doubleMalloc(m * nrhs)) ) ABORT("Malloc fails for rhs[].");
+  if ( !(rhs = doubleMalloc(m * nrhs)) ) SUPERLU_ABORT("Malloc fails for rhs[].");
+  
   /* B : transpose([1,1,1,1,1]);*/
   for (i = 0; i < m; ++i) rhs[i] = 1.0;
   dCreate_Dense_Matrix(&B, m, nrhs, rhs, m, SLU_DN, SLU_D, SLU_GE);
 
-  if ( !(perm_r = intMalloc(m)) ) ABORT("Malloc fails for perm_r[].");
-  if ( !(perm_c = intMalloc(n)) ) ABORT("Malloc fails for perm_c[].");
+  if ( !(perm_r = intMalloc(m)) ) SUPERLU_ABORT("Malloc fails for perm_r[].");
+  if ( !(perm_c = intMalloc(n)) ) SUPERLU_ABORT("Malloc fails for perm_c[].");
 
   /* Set the default input options. */
-  set_default_options(&options);
+  //set_default_options(&options);
   options.ColPerm = NATURAL;
 
   /* Initialize the statistics variables. */
-  StatInit(&stat);
+  StatInit(m, n, &stat);
 
   /* Solve linear system */
-  dgssv(&options, &A, perm_c, perm_r, &L, &U, &B, &stat, &info);
+  pdgssv(n, &A, perm_c, perm_r, &L, &U, &B, &info);
 
   /* Solution is: [-1/32, 11/168, 3/224, 1/16, 11/336] */
   TEST_CHECK( gkyl_compare(-1.0/32.0, rhs[0], 1e-14) );
