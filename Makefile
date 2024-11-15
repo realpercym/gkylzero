@@ -130,7 +130,8 @@ endif
 # Header files
 HEADERS := $(wildcard minus/*.h) $(wildcard zero/*.h) $(wildcard apps/*.h) $(wildcard amr/*.h) $(wildcard kernels/*/*.h)
 # Headers to install
-INSTALL_HEADERS := $(shell ls apps/gkyl_*.h zero/gkyl_*.h amr/gkyl_*.h minus/*.h | sort)
+INSTALL_HEADERS := $(shell ls apps/gkyl_*.h zero/gkyl_*.h  amr/gkyl_*.h | grep -v "priv" | sort)
+INSTALL_HEADERS += $(shell ls minus/*.h)
 
 # all includes
 INCLUDES = -Iminus -Iminus/STC/include -Izero -Iapps -Iamr -Iregression \

@@ -1,15 +1,12 @@
 #!/bin/sh
 
-# Debug: print starting message
-echo "Running gengkylzeroh.sh..."
-
 # list of header files, excluding private headers
-zero_header_list=`cd zero; ls gkyl_*.h | grep -v "priv" | sort; cd ..`
-app_header_list=`cd apps; ls gkyl_*.h | grep -v "priv" | sort; cd ..`
+ zero_header_list=`cd zero; ls gkyl_*.h | grep -v "priv" | sort; cd ..`
+ app_header_list=`cd apps; ls gkyl_*.h | grep -v "priv" | sort; cd ..`
 
 # Debug: print lists of headers
-echo "Zero headers: $zero_header_list"
-echo "App headers: $app_header_list"
+# echo "Zero headers: $zero_header_list"
+# echo "App headers: $app_header_list"
 
 cat <<EOF
 #pragma once
