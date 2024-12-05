@@ -29,7 +29,7 @@ $(info OS detected as $(UNAME))
 SUPERLU_INC = ${PREFIX}/superlu_mt-4.0.0/include/superlu_mt
 ifeq (${UNAME},Darwin)
 	SUPERLU_LIB_DIR = ${PREFIX}/superlu_mt-4.0.0/lib
-	SUPERLU_LIB = ${PREFIX}/superlu_mt-4.0.0/libsuperlu_mt.a
+	SUPERLU_LIB = ${PREFIX}/superlu_mt-4.0.0/lib/libsuperlu_mt.a
 else
 	SUPERLU_LIB_DIR = $(PREFIX)/superlu_mt-4.0.0/lib
 	SUPERLU_LIB = $(PREFIX)/superlu_mt-4.0.0/lib/libsuperlu_mt.a
